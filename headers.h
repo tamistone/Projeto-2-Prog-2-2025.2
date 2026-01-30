@@ -1,0 +1,126 @@
+typedef enum {
+    ALUNO,
+    PROFESSOR,
+    ADMIN,
+    VENDEDOR,
+    LOCADOR,
+    BLIBLIOTECARIO, // função: cuidar dos livros, organizar a biblioteca
+    //ESTAGIARIO // função: Fazer tudo que ninguem quer fazer... brincadeira, isso não deve existir,
+} person_role; // atributo verificado no login para liberar acessos,
+// funciona como sigaa, faz login e libera acesso conforme o cargo, portal do discente
+// portal do docente, portal do admin, etc.
+
+typedef enum {
+    ABERTO,
+    APROVADO,
+    REPROVADO,
+} historic_status;
+
+typedef struct {
+    int id;                       // ID único no sistema
+    int ativo;                    // 1 = Ativo/Matriculado, 0 = Inativo/Deletado
+    char nome[100];               // Nome completo
+    char cpf[20];                 // Apenas números ou formatado
+    char senha[30];               // Senha de login
+    char email[100];              // Email de contato
+    person_role category;        // Categoria da pessoa (Aluno, Professor, etc.)
+    char especialidade[50];       // Ex: "Piano", "Canto", etc. (apenas para professores)
+    // especialidade vazia se for aluno, por padrão é "reclamar", brincadeira, na verdade é ""  
+    // tambem pode ser secretario, diretor.
+    // essa atribuição não afeta nada, serve apenas com label informativo
+} Identidade;
+
+typedef struct
+{
+    char data[10][20];                // [i]"DD/MM/AAAA"
+    int qtd;          // Quantidade
+    char name[20];                 // Nome do evento
+} Class_event;
+
+typedef struct {
+    int id;                       // Código da turma
+    int ano_letivo;               // Ex: 2026
+    char nome[50];                // Ex: "Violão I"
+    int id_professor;             // ID do professor responsável
+    int id_alunos[50];            // Lista de chamada (IDs dos alunos)
+    int qtd_alunos;               // Quantos alunos na turma (0 a 50)
+    char horario[4][10]; 
+    // até 4 códigos de horário
+    // cada string até 9 chars + '\0'
+    // exemplo:
+    // [0] = "2N1234"
+    // [1] = "4T56"
+    int qtd_horarios;              // Quantidade de horários por semana, maximo 4
+    int qtd_aulas;               // Quantidade de aulas que serão ministradas, maximo 100
+    int ativo;                    // 1 = Aberta, 0 = Arquivada
+    int index_of_last_class;        // Índice da última aula ministrada (0 a 99)
+    // o proximo atributo pode oparecer muito absurdo, qualquer coisa ser´simplificado depois
+    Class_event events[10];       // Eventos relacionados à turma
+    /*
+    exemplo 1:
+    events[0].qtd = 3 
+    events[0].data[0] = "15/03/2024"
+    events[0].data[1] = "01/05/2024"
+    events[0].data[2] = "25/07/2024"
+    events[0].name = "Prova Teórica"  
+    exemplo 2:
+    events[1].data[0] = "20/12/2024"
+    events[1].qtd = 1
+    events[1].name = "atividade de casa"
+    */
+    int qtd_events;                // Quantidade de eventos na turma
+} Class;
+
+typedef struct {
+    int owner_id;                 // identificação do dono do histórico, no caso dos alunos
+    int class_id;                 // Código da turma, dai obtemos o ano letivo e toda informação da turma
+    bool frequencia[100];      // Vetor de presença/ausência em cada aula (true = presente, false = ausente)
+    int qtd_notas;                // Quantidade de notas lançadas
+    float notas[10];              // Notas obtidas pelo aluno na turma
+    historic_status status;       // Status final na turma (Aprovado, Reprovado, Aberto)
+} historic_individual;
+
+typedef struct {
+    int owner_id;                  // ID do Aluno, professor ou funcionário
+    float saldo;                  // Valor em R$ (ex: 50.00)
+    struct {
+        int id_livro;             // ID do livro/instrumento (0 = vazio)
+        char data_emprestimo[12]; // Formato "DD/MM/AAAA"
+    } itens[5];                   // Lista de itens emprestados
+    int qtd_livros;               // Quantidade atual de itens (0 a 5)
+    int ativo;                    // 1 = Conta válida, 0 = Removida
+} RecursosIndividuais;
+
+typedef struct {
+    int id;                       // Código do produto
+    char nome[50];                // Ex: "Coxinha"
+    float preco;                  // Preço unitário
+    int quantidade_estoque;       // Quantidade física
+    int ativo;                    // 1 = Venda ativa, 0 = Removido
+} ProdutoCantina;
+
+typedef struct {
+    int id;                       // Código único do livro
+    char nome[100];               // Título ou modelo
+    int quantidade;               // Total físico na escola
+    int ativo;                    // 1 = Disponível, 0 = Removido
+} Biblioteca;
+
+typedef struct {
+    int id_aluno;                 // ID do aluno (dono da nota)
+    int id_turma;                 // ID da turma referente
+    float notas[10];              // Notas lançadas (0.0 a 10.0)
+    int qtd_notas;                // Quantas notas existem (controle do array)
+    int ativo;                    // 1 = Válido, 0 = Deletado
+} RegistroNotas;
+
+
+typedef struct {
+    int id;                       // Código do evento
+    char nome[100];               // Nome do evento
+    char data[20];                // "DD/MM/AAAA"
+    int vagas_totais;             // Capacidade máxima
+    int ids_dos_inscritos[50];    // IDs dos inscritos
+    int qtd_vagas_ocupadas;       // quantidade de vagas ocupadas
+    int ativo;                    // 1 = Agendado, 0 = Cancelado
+} EventoAgenda;

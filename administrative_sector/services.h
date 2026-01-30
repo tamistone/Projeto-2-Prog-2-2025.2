@@ -4,16 +4,16 @@
 #include <stdio.h>
 
 typedef enum {
-    ROLE_ALUNO,
-    ROLE_PROFESSOR,
-    ROLE_ADMIN,
-    ROLE_VENDEDOR,
-    ROLE_LOCADOR
+    ALUNO,
+    PROFESSOR,
+    ADMIN,
+    VENDEDOR,
+    LOCADOR
 } person_role;
 
 typedef struct {
     int id;
-    int ativo;
+    int ativo = 0;
     char nome[100];
     char cpf[15];
     char senha[30];

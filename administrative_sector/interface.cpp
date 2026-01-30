@@ -3,9 +3,17 @@
 
 using namespace std;
 
-void student_window() {
-    cout << "Painel do Aluno\n";
-    
+void student_registration_window() {
+    cout << "Painel de Cadastro de Aluno\n";
+    typedef struct {
+    int id = get_next_id();
+    int ativo = 0;
+    char nome[100];
+    char cpf[15];
+    char senha[30];
+    person_role category;
+} identidade;
+
 }
 
 

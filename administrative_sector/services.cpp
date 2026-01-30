@@ -27,22 +27,10 @@ static person_role read_role() {
     }
 }
 
+int get_next_id() {
+    return 1;
+}   
+
 void register_person(identidade *person) {
-    if (person == nullptr) return;
 
-    cout << "ID: ";
-    cin >> person->id;
-    cin.ignore();
-
-    cout << "Nome: ";
-    cin.getline(person->nome, 100);
-
-    cout << "CPF: ";
-    cin.getline(person->cpf, 20);
-
-    cout << "Senha: ";
-    cin.getline(person->senha, 30);
-
-    person->category = read_role();
-    person->ativo = 1;
 }
