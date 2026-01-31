@@ -6,7 +6,7 @@ typedef enum {
     LOCADOR,
     BLIBLIOTECARIO, // função: cuidar dos livros, organizar a biblioteca
     //ESTAGIARIO // função: Fazer tudo que ninguem quer fazer... brincadeira, isso não deve existir,
-} person_role; // atributo verificado no login para liberar acessos,
+} funcao_pessoa; // atributo verificado no login para liberar acessos,
 // funciona como sigaa, faz login e libera acesso conforme o cargo, portal do discente
 // portal do docente, portal do admin, etc.
 
@@ -14,7 +14,7 @@ typedef enum {
     ABERTO,
     APROVADO,
     REPROVADO,
-} historic_status;
+} status_historico;
 
 typedef struct {
     int id;                       // ID único no sistema
@@ -23,7 +23,7 @@ typedef struct {
     char cpf[20];                 // Apenas números ou formatado
     char senha[30];               // Senha de login
     char email[100];              // Email de contato
-    person_role category;        // Categoria da pessoa (Aluno, Professor, etc.)
+    funcao_pessoa categoria;        // Categoria da pessoa (Aluno, Professor, etc.)
     char especialidade[50];       // Ex: "Piano", "Canto", etc. (apenas para professores)
     // especialidade vazia se for aluno, por padrão é "reclamar", brincadeira, na verdade é ""  
     // tambem pode ser secretario, diretor.
@@ -34,8 +34,8 @@ typedef struct
 {
     char data[10][20];                // [i]"DD/MM/AAAA"
     int qtd;          // Quantidade
-    char name[20];                 // Nome do evento
-} Class_event;
+    char nome[20];                 // Nome do evento
+} Evento_Turma;
 
 typedef struct {
     int id;                       // Código da turma
@@ -53,35 +53,35 @@ typedef struct {
     int qtd_horarios;              // Quantidade de horários por semana, maximo 4
     int qtd_aulas;               // Quantidade de aulas que serão ministradas, maximo 100
     int ativo;                    // 1 = Aberta, 0 = Arquivada
-    int index_of_last_class;        // Índice da última aula ministrada (0 a 99)
+    int indice_ultima_aula;        // Índice da última aula ministrada (0 a 99)
     // o proximo atributo pode oparecer muito absurdo, qualquer coisa ser´simplificado depois
-    Class_event events[10];       // Eventos relacionados à turma
+    Evento_Turma eventos[10];       // Eventos relacionados à turma
     /*
     exemplo 1:
-    events[0].qtd = 3 
-    events[0].data[0] = "15/03/2024"
-    events[0].data[1] = "01/05/2024"
-    events[0].data[2] = "25/07/2024"
-    events[0].name = "Prova Teórica"  
+    eventos[0].qtd = 3 
+    eventos[0].data[0] = "15/03/2024"
+    eventos[0].data[1] = "01/05/2024"
+    eventos[0].data[2] = "25/07/2024"
+    eventos[0].nome = "Prova Teórica"  
     exemplo 2:
-    events[1].data[0] = "20/12/2024"
-    events[1].qtd = 1
-    events[1].name = "atividade de casa"
+    eventos[1].data[0] = "20/12/2024"
+    eventos[1].qtd = 1
+    eventos[1].nome = "atividade de casa"
     */
-    int qtd_events;                // Quantidade de eventos na turma
-} Class;
+    int qtd_eventos;                // Quantidade de eventos na turma
+} Turma;
 
 typedef struct {
-    int owner_id;                 // identificação do dono do histórico, no caso dos alunos
-    int class_id;                 // Código da turma, dai obtemos o ano letivo e toda informação da turma
+    int id_proprietario;                 // identificação do dono do histórico, no caso dos alunos
+    int id_turma;                 // Código da turma, dai obtemos o ano letivo e toda informação da turma
     bool frequencia[100];      // Vetor de presença/ausência em cada aula (true = presente, false = ausente)
     int qtd_notas;                // Quantidade de notas lançadas
     float notas[10];              // Notas obtidas pelo aluno na turma
-    historic_status status;       // Status final na turma (Aprovado, Reprovado, Aberto)
-} historic_individual;
+    status_historico status;       // Status final na turma (Aprovado, Reprovado, Aberto)
+} Historico_Individual;
 
 typedef struct {
-    int owner_id;                  // ID do Aluno, professor ou funcionário
+    int id_proprietario;                  // ID do Aluno, professor ou funcionário
     float saldo;                  // Valor em R$ (ex: 50.00)
     struct {
         int id_livro;             // ID do livro/instrumento (0 = vazio)
@@ -89,7 +89,7 @@ typedef struct {
     } itens[5];                   // Lista de itens emprestados
     int qtd_livros;               // Quantidade atual de itens (0 a 5)
     int ativo;                    // 1 = Conta válida, 0 = Removida
-} RecursosIndividuais;
+} Recursos_Individuais;
 
 typedef struct {
     int id;                       // Código do produto
@@ -97,7 +97,7 @@ typedef struct {
     float preco;                  // Preço unitário
     int quantidade_estoque;       // Quantidade física
     int ativo;                    // 1 = Venda ativa, 0 = Removido
-} ProdutoCantina;
+} Produto_Cantina;
 
 typedef struct {
     int id;                       // Código único do livro

@@ -3,24 +3,24 @@
 
 using namespace std;
 
-void student_registration_window() {
+void janela_cadastro_aluno() {
     cout << "Painel de Cadastro de Aluno\n";
     typedef struct {
-    int id = get_next_id();
+    int id = obter_proximo_id();
     int ativo = 0;
     char nome[100];
     char cpf[15];
     char senha[30];
-    person_role category;
+    funcao_pessoa categoria;
 } identidade;
 
 }
 
 
-void admin_window() {
+void janela_admin() {
     int i = 0;
-    int choice = -1;
-    while (choice != 0) {
+    int escolha = -1;
+    while (escolha != 0) {
         cout << "Painel do Administrador\n";
         cout << "1 - Cadastrar Professor\n";
         cout << "2 - Cadastrar Aluno\n";
@@ -28,12 +28,12 @@ void admin_window() {
         cout << "4 - Cadastrar Locador\n";
         cout << "0 - Sair do Painel Administrativo\n";
         cout << "Escolha uma opção: ";
-        cin >> choice;  
+        cin >> escolha;  
         cin.ignore();
-        switch (choice)
+        switch (escolha)
         {
         case 2:
-            /* code */
+            /* código */
             break;
         
         default:

@@ -1,12 +1,12 @@
-#include "services.h"
+//#include "services.h"
 #include <iostream>
 
 int main() {
-    identidade pessoa;          // cria a struct
+//    identidade pessoa;          // cria a struct
 
-    register_person(&pessoa);   // passa o endereço
+//    registrar_pessoa(&pessoa);   // passa o endereço
 
-    std::cout << "Nome: " << pessoa.nome << "\n";
+    std::cout << "Nome: " << "\n";
 
     return 0;
 }

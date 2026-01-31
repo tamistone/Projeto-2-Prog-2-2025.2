@@ -4,7 +4,7 @@
 
 using namespace std;
 
-static person_role read_role() {
+static funcao_pessoa ler_funcao() {
     int option;
 
     cout << "Categoria:\n";
@@ -18,19 +18,19 @@ static person_role read_role() {
     cin.ignore();
 
     switch(option) {
-        case 0: return ROLE_ALUNO;
-        case 1: return ROLE_PROFESSOR;
-        case 2: return ROLE_ADMIN;
-        case 3: return ROLE_VENDEDOR;
-        case 4: return ROLE_LOCADOR;
-        default: return ROLE_ALUNO;
+        case 0: return FUNCAO_ALUNO;
+        case 1: return FUNCAO_PROFESSOR;
+        case 2: return FUNCAO_ADMIN;
+        case 3: return FUNCAO_VENDEDOR;
+        case 4: return FUNCAO_LOCADOR;
+        default: return FUNCAO_ALUNO;
     }
 }
 
-int get_next_id() {
+int obter_proximo_id() {
     return 1;
 }   
 
-void register_person(identidade *person) {
+void registrar_pessoa(identidade *pessoa) {
 
 }
