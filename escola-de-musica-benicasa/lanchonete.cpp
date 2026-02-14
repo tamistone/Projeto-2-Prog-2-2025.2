@@ -26,6 +26,13 @@ namespace Lanchonete {
         return existe;
     }
 
+    bool bancoExisteCredito() {
+        ifstream arquivo(BANCO_CREDITOS, ios::binary);
+        bool existe = arquivo.is_open();
+        arquivo.close();
+        return existe;
+    }
+
     void lerTodosProdutos(Produto lista[MAX_PRODUTOS]) {
         ifstream arquivo(BANCO_PRODUTOS, ios::binary);
         Produto vazio;
@@ -115,6 +122,15 @@ namespace Lanchonete {
         return MAX_PRODUTOS;
     }
 
+    int acharCreditoPorId(Credito lista[MAX_PRODUTOS], int idOperacao) {
+    for (int i = 0; i < MAX_PRODUTOS; i++) {
+        if (lista[i].id_opera == idOperacao)
+            return i;
+    }
+    return MAX_PRODUTOS;
+}
+
+
     void mostrarProdutosRec(Produto lista[MAX_PRODUTOS], int i) {
         if (i == MAX_PRODUTOS) return;
 
@@ -147,6 +163,16 @@ namespace Lanchonete {
             Saldo saldo_vazio;
             for (int i = 0; i < MAX_PRODUTOS; i++) {
                 arquivo.write((char*)&saldo_vazio, sizeof(Saldo));
+            }
+            arquivo.close();
+        }
+        if (!bancoExisteCredito()) {
+            ofstream arquivo(BANCO_CREDITOS, ios::binary | ios::trunc);
+            if (!arquivo.is_open()) return false;
+
+            Saldo saldo_vazio;
+            for (int i = 0; i < MAX_PRODUTOS; i++) {
+                arquivo.write((char*)&credito_vazio, sizeof(credito));
             }
             arquivo.close();
         }
@@ -259,6 +285,15 @@ namespace Lanchonete {
             cout << "Nenhum produto cadastrado.\n";
     }
 
+    int acharVagaCredito(Credito lista[MAX_PRODUTOS]) {
+    for (int i = 0; i < MAX_PRODUTOS; i++) {
+        if (lista[i].id_opera == 0)
+            return i;
+    }
+    return MAX_PRODUTOS;
+}
+
+
     void consultarSaldo(int idUsuario) {
         if (!bancoDeDados()) {
             cout << "Erro ao abrir o banco!\n";
@@ -343,14 +378,14 @@ namespace Lanchonete {
         cout << "Compra realizada!\n";
     }
 
-    
+
     void removerCredito() {
     int idOperacao;
 
     cout << "ID da operacao de credito: ";
     cin >> idOperacao;
 
-    fstream arq(BANCO_CREDITOS, std::ios::binary | std::ios::in | std::ios::out);
+    fstream arq(BANCO_CREDITOS, fstream::binary | fstream::in | fstream::out);
 
     if (!arq) {
         cout << "Erro ao abrir banco de creditos.\n";
@@ -381,5 +416,50 @@ namespace Lanchonete {
 
     arq.close();
   }
+
+  void adicionarCreditosUsuario() {
+
+    if (!bancoDeDados()) {
+        cout << "Erro ao abrir banco!\n";
+        return;
+    }
+
+    int idUsuario;
+    float valor;
+
+    cout << "ID do usuario: ";
+    cin >> idUsuario;
+
+    cout << "Valor do credito: ";
+    cin >> valor;
+
+    if (valor <= 0) {
+        cout << "Valor invalido!\n";
+        return;
+    }
+
+    Credito lista[MAX_PRODUTOS];
+    lerTodosCreditos(lista);
+
+    int posicao = acharVagaCredito(lista);
+
+    if (posicao == MAX_PRODUTOS) {
+        cout << "Limite de creditos atingido!\n";
+        return;
+    }
+
+    lista[posicao].id_opera = gerarNovoIdCredito(lista);
+    lista[posicao].id_user = idUsuario;
+    lista[posicao].saldo = valor;
+    lista[posicao].realizado = true;
+
+    if (!escreverTodosCreditos(lista)) {
+        cout << "Erro ao salvar credito!\n";
+        return;
+    }
+
+    cout << "Credito registrado com sucesso!\n";
+}
+
 
 }
