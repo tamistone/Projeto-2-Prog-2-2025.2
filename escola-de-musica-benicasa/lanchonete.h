@@ -14,7 +14,7 @@ namespace Lanchonete {
     void adicionarProduto();//Feito
     void removerProduto();//Pra fazer
     void realizarCompra(int id);//Feito
-    void removerCredito();//Pra fazer
+    void removerCredito();//feito
     void visualizarProdutos();//Feito
     void consultarSaldo(int id);//Feito
 }

@@ -342,4 +342,44 @@ namespace Lanchonete {
 
         cout << "Compra realizada!\n";
     }
+
+    
+    void removerCredito() {
+    int idOperacao;
+
+    cout << "ID da operacao de credito: ";
+    cin >> idOperacao;
+
+    fstream arq(BANCO_CREDITOS, std::ios::binary | std::ios::in | std::ios::out);
+
+    if (!arq) {
+        cout << "Erro ao abrir banco de creditos.\n";
+        return;
+    }
+
+    Credito c;
+    bool encontrado = false;
+
+    while (arq.read((char*)&c, sizeof(Credito))) {
+        if (c.id_opera == idOperacao && c.realizado == true) {
+
+            c.realizado = false;
+
+            // Volta o ponteiro para sobrescrever o registro atual
+            arq.seekp(-sizeof(Credito), std::ios::cur);
+            arq.write((char*)&c, sizeof(Credito));
+
+            encontrado = true;
+            cout << "Credito removido com sucesso.\n";
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        cout << "Credito nao encontrado.\n";
+    }
+
+    arq.close();
+  }
+
 }
